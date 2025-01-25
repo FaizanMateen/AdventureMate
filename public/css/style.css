@@ -492,6 +492,7 @@ body {
   font-size: 1.4rem;
 }
 .overview-box__text {
+  font-size: medium;
   text-transform: capitalize;
 }
 .overview-box__img {
@@ -830,6 +831,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  justify-content: flex-end;
 }
 .footer__nav li {
   margin-left: 1.5rem;
