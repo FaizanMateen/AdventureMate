@@ -1,5 +1,6 @@
-const locations = JSON.parse(document.getElementById('map').dataset.locations);
  
+export const displayMap=(locations)=>{
+  
 var map = L.map('map', { zoomControl: false});  //to disable + - zoom
 // var map = L.map('map', { zoomControl: false }).setView([31.111745, -118.113491], );
  
@@ -21,3 +22,4 @@ const bounds = L.latLngBounds(points).pad(0.5);
 map.fitBounds(bounds);
  
 map.scrollWheelZoom.disable();  //to disable zoom by mouse wheel
+}
