@@ -66,7 +66,7 @@ reviewSchema.statics.calcAverageRatings = async function(tourId) {
       }
     }
   ]);
-  console.log(stats);
+  // console.log(stats);
 
   if (stats.length > 0) {
     await Tour.findByIdAndUpdate(tourId, {
@@ -93,7 +93,6 @@ reviewSchema.pre(/^findOneAnd/, async function(next) {
   // beacuse the below .post function could'nt access the values present in const r and only this function couls get the values as it is blocked-scope
   // by using this.r  it  can be accessed by other functions within the same scope
   this.r = await this.findOne();
-  console.log(this.r);
   next();
 });
 
