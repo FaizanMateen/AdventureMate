@@ -8,8 +8,8 @@
   },
   "browserslist": "last 2 versions",
   "scripts": {
-    "start": "set NODE_ENV=development&&nodemon server.js",
-    "start:prod": " set NODE_ENV=production&&nodemon server.js",
+    "start": "set NODE_ENV=development&&node server.js",
+    "start:prod": " set NODE_ENV=production&&node server.js",
     "debug": "ndb server.js",
     "watch:js": "parcel watch --no-hmr ./public/js/index.js --dist-dir ./public/js/bundled",
     "build:js": "parcel build ./public/js/index.js --dist-dir ./public/js/bundled"
