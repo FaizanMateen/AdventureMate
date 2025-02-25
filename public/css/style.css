@@ -12,6 +12,21 @@
   color: #fff;
 }
 
+::-webkit-scrollbar {
+  width: 4px;
+  border: none;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 100%;
+  background: #55c57a;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 0;
+  background: #55c57a;
+}
+
 *,
 *::before,
 *::after {
@@ -605,10 +620,11 @@ body {
   display: grid;
   grid-column-gap: 6rem;
   grid-auto-flow: column;
-  overflow-x: scroll;
+  overflow-x: auto; /* Changed from scroll to auto to hide the scrollbar when not needed */
   -ms-scroll-snap-type: x mandatory;
   scroll-snap-type: x mandatory;
 }
+
 .reviews__card {
   width: 30rem;
   padding: 4rem;
