@@ -7,7 +7,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
-const compression = require('compression')
+const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -19,6 +20,8 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+app.enable('trust proxy');
+
 // Further HELMET configuration for Security Policy (CSP)
 const scriptSrcUrls = [
   'https://unpkg.com/',
@@ -28,7 +31,7 @@ const scriptSrcUrls = [
   'https://js.stripe.com/v3/',
   'https://checkout.stripe.com',
   'https://api.tiles.mapbox.com/',
-  'https://api.mapbox.com/'
+  'https://api.mapbox.com/',
 ];
 const styleSrcUrls = [
   'https://unpkg.com/',
@@ -37,8 +40,7 @@ const styleSrcUrls = [
   'https://api.mapbox.com/',
   'https://api.tiles.mapbox.com/',
   'https://www.myfonts.com/fonts/radomir-tinkov/gilroy/*',
-  ' checkout.stripe.com'
-  
+  ' checkout.stripe.com',
 ];
 const connectSrcUrls = [
   'https://unpkg.com',
@@ -47,14 +49,14 @@ const connectSrcUrls = [
   'https://bundle.js:*',
   'ws://localhost:*/',
   'https://*.mapbox.com/',
-  '*.stripe.com'
+  '*.stripe.com',
 ];
 // const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 const fontSrcUrls = [
-  "fonts.googleapis.com",
-  "fonts.gstatic.com",
-  "https://cdn.example.com", // Add the font source URL here
-  '<URL>'
+  'fonts.googleapis.com',
+  'fonts.gstatic.com',
+  'https://cdn.example.com', // Add the font source URL here
+  '<URL>',
 ];
 app.use(
   helmet.contentSecurityPolicy({
@@ -62,7 +64,7 @@ app.use(
       defaultSrc: [],
       connectSrc: ["'self'", ...connectSrcUrls],
       // scriptSrc: ["'self'", ...scriptSrcUrls],
-      scriptSrc: ["'self'", ...scriptSrcUrls, "https://js.stripe.com"],
+      scriptSrc: ["'self'", ...scriptSrcUrls, 'https://js.stripe.com'],
       styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
       workerSrc: ["'self'", 'blob:'],
       objectSrc: [],
@@ -75,11 +77,23 @@ app.use(
   })
 );
 
-
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1)GLOBAL MIDDLEWARE
+// Implement CORS
+app.use(cors());
+// Access-Control-Allows-Origin *
+//api.natours.com, front-end natours.com
+// app.use(
+//   cors({
+//     origin: 'https://natours.com',
+//   })
+// );
+
+app.options('*', cors());
+// app.options('/api/v1/tours/:id',cors());
+
 // Serving static files
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -94,7 +108,7 @@ if (process.env.NODE_ENV === 'development') {
 const limiter = rateLimit({
   max: 100,
   windowMs: 60 * 60 * 1000,
-  message: 'Too many request from this IP, please try again in an hour!'
+  message: 'Too many request from this IP, please try again in an hour!',
 });
 app.use('/api', limiter);
 
@@ -118,12 +132,12 @@ app.use(
       'ratingsAverage',
       'maxGroupSize',
       'difficulty',
-      'price'
-    ]
+      'price',
+    ],
   })
 );
 
-app.use(compression())
+app.use(compression());
 
 // Test middleware
 app.use((req, res, next) => {
